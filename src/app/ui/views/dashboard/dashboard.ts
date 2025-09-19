@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {SidebarUi} from '@ui-component';
-import {SidebarUiInterface} from '@interfaces';
-import {OrderHandlerUi} from '@ui-component';
+import {Component, inject} from '@angular/core';
+import {DashboardSignals} from '@signals-services';
+import {SidebarUi} from '../../components/sidebar-ui/sidebar-ui';
+import {OrderHandlerUi} from '../../components/order-handler-ui/order-handler-ui';
 
 @Component({
   selector: 'dashboard-view',
@@ -13,44 +13,20 @@ import {OrderHandlerUi} from '@ui-component';
   template: `
     <div class="flex h-full">
       <div class="p-2 h-full">
-        <sidebar-ui [sidebar]="sidebar"></sidebar-ui>
+        <sidebar-ui
+          [sidebar]="this.dashboardSignals.sidebar()"
+          (sideBarOnClick)="this.dashboardSignals.onSideBarOnClick($event)"
+        />
       </div>
-      <div class="flex flex-col flex-1 h-full overflow-auto ml-64">
-        <order-handler-ui></order-handler-ui>
+      <div class="flex flex-col flex-1 h-full overflow-auto ml-64 pr-4">
+        <order-handler-ui
+          [orderHandler]="this.dashboardSignals.orderHandler()"
+        ></order-handler-ui>
       </div>
     </div>
   `,
   styleUrl: './dashboard.scss'
 })
 export class Dashboard {
-
-  protected readonly sidebar: SidebarUiInterface = {
-    collapsed: false,
-    header: {
-      title: 'LaundryApp',
-      logo: 'droplets',
-      subtitle: 'Clean & Fresh'
-    },
-    menuItems: [
-      {
-        id: "orders",
-        label: "My Orders",
-        icon: {
-          name: "shopping-bag"
-        },
-        isActive: true,
-        route: '/orders',
-      },
-      {
-        id: "history",
-        label: "Order History",
-        icon: {
-          name: "history"
-        },
-        isActive: false,
-        route: '/history',
-      },
-
-    ]
-  }
+  protected readonly dashboardSignals = inject(DashboardSignals);
 }

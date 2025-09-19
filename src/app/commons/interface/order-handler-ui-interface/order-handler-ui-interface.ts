@@ -1,7 +1,8 @@
-import {OrderFilterUiInterface,OrderHeaderUiInterface} from '@interfaces';
+import {OrderCallBackInterface, OrderFilterUiInterface, OrderHeaderUiInterface, TabsDataUiInterface} from '@interfaces';
 
 export interface OrderHandlerUiInterface {
   headerOrder : OrderHeaderUiInterface,
   filterOrder:OrderFilterUiInterface,
-  tabs:string,
+  tabs:TabsDataUiInterface,
+  callbacks: OrderCallBackInterface;
 }

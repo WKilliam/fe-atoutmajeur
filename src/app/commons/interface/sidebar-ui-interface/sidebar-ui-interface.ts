@@ -1,5 +1,4 @@
-import {SidebarMenuInterface} from '@interfaces';
-import {SidebarHeaderInterface} from '@interfaces';
+import {SidebarMenuInterface,SidebarHeaderInterface} from '@interfaces';
 
 export interface SidebarUiInterface {
   header: SidebarHeaderInterface;

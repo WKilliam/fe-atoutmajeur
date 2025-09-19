@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ButtonUi} from '@ui-component';
 import {OrderHeaderUiInterface} from '@interfaces';
+import {ButtonUi} from '../button-ui/button-ui';
 
 @Component({
-  selector: 'header-order-handler-ui',
+  selector: 'header-order-ui',
   imports: [
     ButtonUi
   ],
@@ -14,7 +14,7 @@ import {OrderHeaderUiInterface} from '@interfaces';
           <p class="text-3xl font-bold text-dark">{{this.headerOrder.title}}</p>
           <p class="text-sm text-dark opacity-60 mt-1">{{this.headerOrder.description}}</p>
         </div>
-        <button-ui [config]="this.headerOrder.btn" (handlerOnClick)="onButtonClicked($event)"></button-ui>
+        <button-ui [config]="this.headerOrder.btn" (handlerOnClick)="this.onButtonClicked($event)"></button-ui>
       </div>
     </div>
   `,

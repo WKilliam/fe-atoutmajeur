@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, Output, signal} from '@angular/core';
-import {ButtonUiInterface} from '../../../commons/interface/button-ui-interface/button-ui-interface';
-import {IconUi} from '@ui-component';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ButtonUiInterface} from '@interfaces';
+import {IconUi} from '../icons-ui/icons-ui';
 
 @Component({
   selector: 'button-ui',
@@ -16,15 +16,16 @@ import {IconUi} from '@ui-component';
         <span class="animate-spin">⏳</span>
       }
       @if (config.icon && config.iconPosition === 'left') {
-        <icon-ui [icon]="{name: config.icon, class: 'w-4 h-4'}"></icon-ui>
+        <icon-ui [icon]="config.icon"></icon-ui>
       }
-      <span>{{ config.label }}</span>
+      @if (config.label) {
+        <span>{{ config.label }}</span>
+      }
       @if (config.icon && config.iconPosition === 'right') {
-        <icon-ui [icon]="{name: config.icon, class: 'w-4 h-4'}"></icon-ui>
+        <icon-ui [icon]="config.icon"></icon-ui>
       }
     </button>
   `,
-  styleUrl: './button-ui.scss'
 })
 export class ButtonUi {
   @Input({required:true}) config: ButtonUiInterface = {label: 'Button'};
@@ -32,26 +33,52 @@ export class ButtonUi {
   @Output() handlerOnClick = new EventEmitter();
 
   getButtonClasses(): string {
-    const baseClasses = 'px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2';
+    const baseClasses = 'rounded-lg font-medium transition-colors flex items-center space-x-2';
 
     const variantClasses = {
       primary: 'bg-primary hover:bg-secondary text-light',
       secondary: 'bg-secondary hover:bg-primary text-dark',
       outline: 'border border-primary text-primary hover:bg-primary hover:text-light',
       ghost: 'text-primary hover:bg-accent',
-      danger: 'bg-error hover:bg-error text-light opacity-90 hover:opacity-100'
+      danger: 'bg-error hover:bg-error text-light opacity-90 hover:opacity-100',
+      sidebarActif: 'bg-blue-500 text-white hover:bg-blue-600 w-full',
+      sidebarInactif: 'text-gray-700 hover:bg-gray-100 w-full'
     };
 
-    const sizeClasses = {
+    // Width classes
+    const sizeWClasses = {
+      auto: 'w-auto',
+      full: 'w-full',
+      fit: 'w-fit',
+      xs: 'w-16',
+      sm: 'w-20',
+      md: 'w-24',
+      lg: 'w-32',
+      xl: 'w-40'
+    };
+
+    // Height classes (padding vertical)
+    const sizeHClasses = {
+      xs: 'px-2 py-1 text-xs',
       sm: 'px-3 py-1 text-sm',
-      md: 'px-4 py-2',
-      lg: 'px-6 py-3 text-lg'
+      md: 'px-4 py-2 text-base',
+      lg: 'px-6 py-3 text-lg',
+      xl: 'px-8 py-4 text-xl'
+    };
+
+    // Text alignment classes
+    const textAlignClasses = {
+      left: 'justify-start text-left',
+      center: 'justify-center text-center',
+      right: 'justify-end text-right'
     };
 
     return [
       baseClasses,
       variantClasses[this.config.variant || 'primary'],
-      sizeClasses[this.config.size || 'md']
+      sizeWClasses[this.config.sizeW || 'auto'],
+      sizeHClasses[this.config.sizeH || 'md'],
+      textAlignClasses[this.config.textAlign || 'center']
     ].join(' ');
   }
 

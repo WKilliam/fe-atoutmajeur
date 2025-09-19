@@ -1,9 +1,8 @@
-import {IconsUiInterfaces} from '../icons-ui-interface/icons-ui-interfaces';
+import {ButtonUiInterface} from '@interfaces';
 
 export interface SidebarMenuInterface {
   id: string;
-  label: string;
-  icon?: IconsUiInterfaces;
+  button: ButtonUiInterface;
   route?: string;
   isActive?: boolean;
   badge?: string | number;
