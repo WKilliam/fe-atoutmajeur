@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@constants": ["app/commons/constants/index.ts"],
+      "@interfaces": ["app/commons/interface/index.ts"],
+      "@types": ["app/commons/types/index.ts"],
+      "@ui-component": ["app/ui/components/index.ts"],
+      "@ui-views": ["app/ui/views/index.ts"]
+    },
+    "moduleResolution": "bundler",
+    "strict": true,
+    "target": "ES2022",
+    "module": "es2022",
+    "experimentalDecorators": true,
+    "importHelpers": true
+  }
+}

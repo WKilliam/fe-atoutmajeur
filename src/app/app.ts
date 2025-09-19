@@ -1,10 +1,14 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Dashboard} from '@ui-views';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
+  imports: [
+    Dashboard
+  ],
+  template:`
+    <dashboard-view/>
+  `,
   styleUrl: './app.scss'
 })
 export class App {
