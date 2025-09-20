@@ -8,4 +8,5 @@ export interface InputUiInterface {
   label: string;
   required:boolean
   errorMessage:string
+  callback: (event: Event) => void;
 }

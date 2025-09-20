@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabDataElementsUi } from './tab-data-elements-ui';
+import { ModalUi } from './modal-ui';
 
-describe('TabDataElementsUi', () => {
-  let component: TabDataElementsUi;
-  let fixture: ComponentFixture<TabDataElementsUi>;
+describe('ModalUi', () => {
+  let component: ModalUi;
+  let fixture: ComponentFixture<ModalUi>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TabDataElementsUi]
+      imports: [ModalUi]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TabDataElementsUi);
+    fixture = TestBed.createComponent(ModalUi);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

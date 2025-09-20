@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {InputUiInterface} from '@interfaces';
 import {IconUi} from '../icons-ui/icons-ui';
 
@@ -34,7 +34,7 @@ import {IconUi} from '../icons-ui/icons-ui';
           [disabled]="input.disabled"
           [required]="input.required"
           [class]="getInputClasses()"
-          (input)="onInput($event)"
+          (input)="this.input.callback($event)"
         >
 
         @if (input.icon && input.iconPosition === 'right') {
@@ -61,18 +61,13 @@ export class IntpusUi {
     type: 'text',
     label: '',
     required: false,
-    errorMessage: ''
+    errorMessage: '',
+    callback(event: Event): void {
+      throw new Error("Function not implemented.");
+    },
   };
 
-  @Output() inputChange = new EventEmitter<string>();
-
-  // ID unique pour lier le label à l'input
   inputId = `input-${Math.random().toString(36).substr(2, 9)}`;
-
-  onInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.inputChange.emit(target.value);
-  }
 
   getInputClasses(): string {
     const baseClasses = 'w-full py-2 border border-accent rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-dark bg-light';

@@ -8,7 +8,6 @@ import {
   CONST_SizeHElementConstant,
   CONST_SizeWElementConstant
 } from '@constants';
-import { TYPE_FilterChangeInfo, TYPE_ButtonClickInfo } from "@types";
 
 @Injectable({providedIn: 'root'})
 export class OrderHandlerSignals {
@@ -177,6 +176,19 @@ export class OrderHandlerSignals {
         icon: {
           name: 'file-pen-line',
           class: 'w-6 h-6'
+        },
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
+      },
+      modal: {
+        isOpen: false,
+        title: "",
+        btnOptions: [],
+        btnCloseButton: {
+          callback: function (event: MouseEvent): void {
+            throw new Error("Function not implemented.");
+          }
         }
       }
     },
@@ -189,6 +201,9 @@ export class OrderHandlerSignals {
         icon: {
           name: 'plus',
           class: 'w-6 h-6'
+        },
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
         }
       }
     },
@@ -200,73 +215,65 @@ export class OrderHandlerSignals {
         label: "Search :",
         required: false,
         errorMessage: "",
-        class: 'w-72 h-10'
+        class: 'w-72 h-10',
+        callback: function (event: Event): void {
+          throw new Error("Function not implemented.");
+        }
       },
       selectGarmentPossibilities: {
         label: "Select Status",
         required: true,
         placeholder: "ex: Shirts",
         class: 'w-72 h-10',
-        options: Const_GarmentPossibility
+        options: Const_GarmentPossibility,
+        callback: function (event: Event): void {
+          throw new Error("Function not implemented.");
+        }
       },
       selectOrderStatus: {
         label: "Select Status",
         required: true,
         placeholder: "ex: In Process",
         class: 'w-72 h-10',
-        options: CONST_OrderStatusSelectOptions
+        options: CONST_OrderStatusSelectOptions,
+        callback: function (event: Event): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnTimeToday: {
         label: "Days",
         sizeW: CONST_SizeWElementConstant.MD,
-        sizeH: CONST_SizeHElementConstant.MD
+        sizeH: CONST_SizeHElementConstant.MD,
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnTimeWeek: {
         label: "Week",
         sizeW: CONST_SizeWElementConstant.MD,
-        sizeH: CONST_SizeHElementConstant.MD
+        sizeH: CONST_SizeHElementConstant.MD,
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnTimeMonth: {
         label: "Mounth",
         sizeW: CONST_SizeWElementConstant.MD,
-        sizeH: CONST_SizeHElementConstant.MD
+        sizeH: CONST_SizeHElementConstant.MD,
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnStartSearch: {
         iconPosition: "left",
         icon: {
           name: 'search',
           class: 'w-6 h-6'
+        },
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
         }
       },
-    },
-    callbacks: {
-      handlerHeaderCallBack: function (event: MouseEvent): void {
-        console.log('Header button clicked:', event);
-      },
-      searchInputCallBack: function (infoRef: TYPE_FilterChangeInfo, event: string | string[]): void {
-        console.log('Search input changed:', infoRef, event);
-      },
-      selectGarmentPossibilityCallBack: function (infoRef: TYPE_FilterChangeInfo, event: string | string[]): void {
-        console.log('Garment selection changed:', infoRef, event);
-      },
-      selectOrderStatusCallBack: function (infoRef: TYPE_FilterChangeInfo, event: string | string[]): void {
-        console.log('Order status changed:', infoRef, event);
-      },
-      btnTodayCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        console.log('Today button clicked:', infoRef, event);
-      },
-      btnWeeklyCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        console.log('Weekly button clicked:', infoRef, event);
-      },
-      btnMonthCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        console.log('Month button clicked:', infoRef, event);
-      },
-      btnStartSearchCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        console.log('Start search button clicked:', infoRef, event);
-      },
-      tabElementOnClickCallBack: function (event: number): void {
-        console.log('Table element clicked:', event);
-      }
     }
   })
 

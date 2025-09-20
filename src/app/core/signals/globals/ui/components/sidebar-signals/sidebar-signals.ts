@@ -20,6 +20,9 @@ export class SidebarSignals {
           icon: {
             name: "shopping-bag",
             class: 'w-6 h-6'
+          },
+          callback: function (event: MouseEvent): void {
+            throw new Error("Function not implemented.");
           }
         },
         isActive: true,
@@ -34,6 +37,9 @@ export class SidebarSignals {
           icon: {
             name: "history",
             class: 'w-6 h-6'
+          },
+          callback: function (event: MouseEvent): void {
+            throw new Error("Function not implemented.");
           }
         },
         isActive: false,

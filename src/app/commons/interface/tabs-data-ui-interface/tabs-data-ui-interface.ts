@@ -1,4 +1,4 @@
-import {ButtonUiInterface, CustomerOrderInterface, TabsDataElementUiInterface} from '@interfaces';
+import {ButtonUiInterface, CustomerOrderInterface, ModalUiInterface, TabsDataElementUiInterface} from '@interfaces';
 
 export interface TabsDataUiInterface {
   columns: TabsDataElementUiInterface[];
@@ -7,4 +7,5 @@ export interface TabsDataUiInterface {
   striped?: boolean;
   bordered?: boolean;
   btnItems: ButtonUiInterface;
+  modal:ModalUiInterface
 }

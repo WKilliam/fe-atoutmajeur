@@ -5,7 +5,6 @@ export * from './input-ui-interface/input-ui-interface'
 export * from './order-filter-ui-interface/order-filter-ui-interface'
 export * from './order-handler-ui-interface/order-handler-ui-interface'
 export * from './order-header-ui-interface/order-header-ui-interface'
-export * from './order-filter-call-back-interface/order-filter-call-back-interface'
 
 //select
 export * from './select-ui-interface/select-ui-interface'
@@ -22,3 +21,6 @@ export * from './tabs-data-element-ui-interface/tabs-data-element-ui-interface'
 export * from './tabs-data-elements-interface/tabs-data-elements-interface'
 
 export * from './customer-order-data-interface/customer-order-data-interface'
+
+
+export * from './modal-ui-interface/modal-ui-interface'

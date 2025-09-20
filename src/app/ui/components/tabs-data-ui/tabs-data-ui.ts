@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ButtonUiInterface, TabsDataUiInterface} from '@interfaces';
 import {ButtonUi} from '../button-ui/button-ui';
+import {ModalUi} from '../modal-ui/modal-ui';
 
 @Component({
   selector: 'tabs-data-ui',
   imports: [
-    ButtonUi
+    ButtonUi,
+    ModalUi
   ],
   standalone: true,
   template:`
@@ -39,8 +41,7 @@ import {ButtonUi} from '../button-ui/button-ui';
               @if (config.showActions) {
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-dark">
                   <div class="flex space-x-2">
-                    <!--                    <button class="text-primary hover:text-secondary">Order</button>-->
-                    <button-ui [config]="this.config.btnItems" (handlerOnClick)="onRowClick(row.id)"></button-ui>
+                    <button-ui [config]="this.config.btnItems"></button-ui>
                   </div>
                 </td>
               }
@@ -55,20 +56,33 @@ import {ButtonUi} from '../button-ui/button-ui';
           <p class="text-dark opacity-60">No data available</p>
         </div>
       }
+      <modal-ui [modal]="config.modal"></modal-ui>
     </div>
   `
 })
 export class TabsDataUi {
   @Input({required: true}) config: TabsDataUiInterface = {
-    btnItems: {},
+    modal: {
+      isOpen: false,
+      title: "",
+      btnOptions: [],
+      btnCloseButton: {
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
+      }
+    },
+    btnItems: {
+      callback: function (event: MouseEvent): void {
+        throw new Error("Function not implemented.");
+      }
+    },
     columns: [],
     data: [],
     showActions: false,
     striped: true,
     bordered: true
   };
-
-  @Output() handlerOnClick = new EventEmitter();
 
   getTableClasses(): string {
     const baseClasses = 'min-w-full divide-y divide-accent';
@@ -98,10 +112,6 @@ export class TabsDataUi {
       return new Date(value).toLocaleDateString('fr-FR');
     }
     return value?.toString() || '';
-  }
-
-  onRowClick(itemId:number) {
-    this.handlerOnClick.emit(itemId);
   }
 
 }

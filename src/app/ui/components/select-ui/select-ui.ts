@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {SelectUiInterface} from '@interfaces';
 
 @Component({
@@ -21,7 +21,7 @@ import {SelectUiInterface} from '@interfaces';
       [multiple]="selectUi.multiple"
       [disabled]="selectUi.disabled"
       [class]="getSelectClasses()"
-      (change)="onChange($event)"
+      (change)="this.selectUi.callback($event)"
     >
       <!-- Placeholder à l'intérieur du select -->
       @if (selectUi.placeholder && !selectUi.multiple) {
@@ -48,24 +48,14 @@ export class SelectUi {
     options: [],
     placeholder: '',
     label: '',
-    required: false
+    required: false,
+    callback(event: Event): void {
+      throw new Error("Function not implemented.");
+    },
   };
-
-  @Output() selectionChange = new EventEmitter<string | string[]>();
 
   // ID unique pour lier le label au select
   selectId = `select-${Math.random().toString(36).substr(2, 9)}`;
-
-  onChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-
-    if (this.selectUi.multiple) {
-      const selectedValues = Array.from(select.selectedOptions).map(option => option.value);
-      this.selectionChange.emit(selectedValues);
-    } else {
-      this.selectionChange.emit(select.value);
-    }
-  }
 
   getSelectClasses(): string {
     const baseClasses = 'px-3 py-2 border border-accent rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary text-dark bg-light';

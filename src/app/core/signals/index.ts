@@ -1,6 +1,6 @@
 // features
-export * from './features/dashboard-signals/dashboard-signals'
+export * from './globals/ui/views/dashboard-signals/dashboard-signals'
 
 // globals
-export * from './globals/sidebar-signals/sidebar-signals';
-export * from './globals/order-handler-signals/order-handler-signals'
+export * from './globals/ui/components/sidebar-signals/sidebar-signals';
+export * from './globals/ui/components/order-handler-signals/order-handler-signals'

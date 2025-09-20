@@ -29,7 +29,6 @@ import {ButtonUi} from '../button-ui/button-ui';
           <div class="mb-2">
             <button-ui
               [config]="item.button"
-              (handlerOnClick)="onClick({btn:item})"
             ></button-ui>
           </div>
         }
@@ -44,10 +43,5 @@ export class SidebarUi {
       title: ""
     },
     menuItems: []
-  }
-  @Output() sideBarOnClick:EventEmitter<{btn:SidebarMenuInterface}> = new EventEmitter();
-
-  onClick(item: {btn:SidebarMenuInterface}) {
-    this.sideBarOnClick.emit(item);
   }
 }

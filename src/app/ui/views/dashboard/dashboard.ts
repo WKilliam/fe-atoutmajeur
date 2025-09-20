@@ -15,7 +15,6 @@ import {OrderHandlerUi} from '../../components/order-handler-ui/order-handler-ui
       <div class="p-2 h-full">
         <sidebar-ui
           [sidebar]="this.dashboardSignals.sidebar()"
-          (sideBarOnClick)="this.dashboardSignals.onSideBarOnClick($event)"
         />
       </div>
       <div class="flex flex-col flex-1 h-full overflow-auto ml-64 pr-4">

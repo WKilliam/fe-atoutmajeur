@@ -1,9 +1,8 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {OrderCallBackInterface, OrderHandlerUiInterface} from '@interfaces';
+import {Component, Input} from '@angular/core';
+import { OrderHandlerUiInterface} from '@interfaces';
 import {HeaderOrderHandlerUi} from '../header-order-handler-ui/header-order-handler-ui';
 import {FilterOrderUi} from '../filter-order-ui/filter-order-ui';
 import {TabsDataUi} from '../tabs-data-ui/tabs-data-ui';
-import {TYPE_ButtonClickInfo, TYPE_FilterChangeInfo} from '@types';
 
 @Component({
   selector: 'order-handler-ui',
@@ -14,7 +13,6 @@ import {TYPE_ButtonClickInfo, TYPE_FilterChangeInfo} from '@types';
       <div class="flex-shrink-0 shadow-sm border-b border-accent">
         <header-order-ui
           [headerOrder]="orderHandler.headerOrder"
-          (headerOnClickButton)="this.orderHandler.callbacks.handlerHeaderCallBack($event)"
         />
       </div>
 
@@ -22,21 +20,6 @@ import {TYPE_ButtonClickInfo, TYPE_FilterChangeInfo} from '@types';
       <div class="flex-shrink-0 border-b border-accent">
         <filter-order-ui
           [filterOrder]="orderHandler.filterOrder"
-          (handlerSelectOrderStatusChanged)="this.orderHandler.callbacks
-          .selectOrderStatusCallBack('select status',$event)"
-          (handlerSearchInputChanged)="this.orderHandler.callbacks
-          .searchInputCallBack('input',$event)"
-          (handlerSelectGarmentStatusChanged)="this.orderHandler.callbacks
-          .selectGarmentPossibilityCallBack('select garment possibilities',$event)"
-
-          (handlerOnClickedMouthChanged)="this.orderHandler.callbacks
-          .btnMonthCallBack('month',$event)"
-          (handlerOnClickedStartSearchChanged)="this.orderHandler.callbacks
-          .btnStartSearchCallBack('start search',$event)"
-          (handlerOnClickedTodayChanged)="this.orderHandler.callbacks
-          .btnTodayCallBack('today',$event)"
-          (handlerOnClickedWeekChanged)="this.orderHandler.callbacks
-          .btnWeeklyCallBack('week',$event)"
         />
       </div>
 
@@ -45,8 +28,6 @@ import {TYPE_ButtonClickInfo, TYPE_FilterChangeInfo} from '@types';
         <div class="h-full overflow-auto">
           <tabs-data-ui
             [config]="orderHandler.tabs"
-            (handlerOnClick)="this.orderHandler.callbacks
-            .tabElementOnClickCallBack($event)"
           />
         </div>
       </div>
@@ -59,7 +40,10 @@ export class OrderHandlerUi {
       title: "",
       description: "",
       btn: {
-        label: ""
+        label: "",
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       }
     },
     filterOrder: {
@@ -67,62 +51,68 @@ export class OrderHandlerUi {
         type: "number",
         label: "",
         required: false,
-        errorMessage: ""
+        errorMessage: "",
+        callback: function (event: Event): void {
+          throw new Error("Function not implemented.");
+        }
       },
       selectGarmentPossibilities: {
         options: [],
-        required: false
+        required: false,
+        callback: function (event: Event): void {
+          throw new Error("Function not implemented.");
+        }
       },
       selectOrderStatus: {
         options: [],
-        required: false
+        required: false,
+        callback: function (event: Event): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnTimeToday: {
-        label: ""
+        label: "",
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnTimeWeek: {
-        label: ""
+        label: "",
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnTimeMonth: {
-        label: ""
+        label: "",
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       },
       btnStartSearch: {
-        label: ""
+        label: "",
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       }
     },
     tabs: {
       columns: [],
       data: [],
-      btnItems: {}
-    },
-    callbacks: {
-      handlerHeaderCallBack: function (event: MouseEvent): void {
-        throw new Error("Function not implemented.");
+      btnItems: {
+        callback: function (event: MouseEvent): void {
+          throw new Error("Function not implemented.");
+        }
       },
-      searchInputCallBack: function (infoRef: TYPE_FilterChangeInfo, event: string | string[]): void {
-        throw new Error("Function not implemented.");
-      },
-      selectGarmentPossibilityCallBack: function (infoRef: TYPE_FilterChangeInfo, event: string | string[]): void {
-        throw new Error("Function not implemented.");
-      },
-      selectOrderStatusCallBack: function (infoRef: TYPE_FilterChangeInfo, event: string | string[]): void {
-        throw new Error("Function not implemented.");
-      },
-      btnTodayCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        throw new Error("Function not implemented.");
-      },
-      btnWeeklyCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        throw new Error("Function not implemented.");
-      },
-      btnMonthCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        throw new Error("Function not implemented.");
-      },
-      btnStartSearchCallBack: function (infoRef: TYPE_ButtonClickInfo, event: string | string[]): void {
-        throw new Error("Function not implemented.");
-      },
-      tabElementOnClickCallBack: function (event: number): void {
-        throw new Error("Function not implemented.");
+      modal: {
+        isOpen: false,
+        title: "",
+        btnOptions: [],
+        btnCloseButton: {
+          callback: function (event: MouseEvent): void {
+            throw new Error("Function not implemented.");
+          }
+        }
       }
-    }
+    },
   };
 }

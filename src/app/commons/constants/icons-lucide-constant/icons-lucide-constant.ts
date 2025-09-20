@@ -5,7 +5,8 @@ import {
   Droplets,
   Plus,
   Search,
-  FilePenLine
+  FilePenLine,
+  X
 } from 'lucide-angular';
 
 export const CONST_LucideIconRecord: Record<string, any> = {
@@ -17,4 +18,5 @@ export const CONST_LucideIconRecord: Record<string, any> = {
   'plus':Plus,
   'search':Search,
   'file-pen-line': FilePenLine,
+  'x':X
 };

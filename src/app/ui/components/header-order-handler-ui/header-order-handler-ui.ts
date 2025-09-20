@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {OrderHeaderUiInterface} from '@interfaces';
 import {ButtonUi} from '../button-ui/button-ui';
 
@@ -14,7 +14,7 @@ import {ButtonUi} from '../button-ui/button-ui';
           <p class="text-3xl font-bold text-dark">{{this.headerOrder.title}}</p>
           <p class="text-sm text-dark opacity-60 mt-1">{{this.headerOrder.description}}</p>
         </div>
-        <button-ui [config]="this.headerOrder.btn" (handlerOnClick)="this.onButtonClicked($event)"></button-ui>
+        <button-ui [config]="this.headerOrder.btn" (handlerOnClick)="this.headerOrder.btn.callback($event)"></button-ui>
       </div>
     </div>
   `,
@@ -22,15 +22,12 @@ import {ButtonUi} from '../button-ui/button-ui';
 export class HeaderOrderHandlerUi {
   @Input({required: true}) headerOrder: OrderHeaderUiInterface = {
     btn: {
-      label: ""
+      label: "",
+      callback: function (event: MouseEvent): void {
+        throw new Error("Function not implemented.");
+      }
     },
     description: '',
     title: ''
-  }
-
-  @Output() headerOnClickButton = new EventEmitter();
-
-  onButtonClicked(event: MouseEvent){
-    this.headerOnClickButton.emit(event);
   }
 }

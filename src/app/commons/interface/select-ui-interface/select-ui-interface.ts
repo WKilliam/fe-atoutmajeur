@@ -8,4 +8,5 @@ export interface SelectUiInterface {
   class?: string;
   label?: string;
   required:boolean
+  callback: (event: Event) => void;
 }
