@@ -14,7 +14,7 @@ import {ButtonUi} from '../button-ui/button-ui';
           <p class="text-3xl font-bold text-dark">{{this.headerOrder.title}}</p>
           <p class="text-sm text-dark opacity-60 mt-1">{{this.headerOrder.description}}</p>
         </div>
-        <button-ui [config]="this.headerOrder.btn" (handlerOnClick)="this.headerOrder.btn.callback($event)"></button-ui>
+        <button-ui [config]="this.headerOrder.btn"></button-ui>
       </div>
     </div>
   `,

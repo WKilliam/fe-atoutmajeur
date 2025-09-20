@@ -6,7 +6,8 @@
       "@interfaces": ["app/commons/interface/index.ts"],
       "@types": ["app/commons/types/index.ts"],
       "@ui-views": ["app/ui/views/index.ts"],
-      "@signals-services": ["app/core/signals/index.ts"]
+      "@signals-services": ["app/core/signals/index.ts"],
+      "@enums": ["app/commons/enums/index.ts"]
     },
     "moduleResolution": "bundler",
     "strict": true,

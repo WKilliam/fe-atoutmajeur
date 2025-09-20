@@ -3,7 +3,7 @@ import {TYPE_SizeH, TYPE_SizeW, TYPE_TextAlign} from '@types';
 
 export interface ButtonUiInterface {
   label?: string;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'sidebarActif' | 'sidebarInactif' | 'iconBtn';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'sidebarActif' | 'sidebarInactif' | 'iconBtn' | 'textbtn';
   sizeW?: TYPE_SizeW;
   sizeH?: TYPE_SizeH;
   textAlign?: TYPE_TextAlign;

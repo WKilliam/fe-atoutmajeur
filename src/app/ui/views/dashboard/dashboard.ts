@@ -24,7 +24,6 @@ import {OrderHandlerUi} from '../../components/order-handler-ui/order-handler-ui
       </div>
     </div>
   `,
-  styleUrl: './dashboard.scss'
 })
 export class Dashboard {
   protected readonly dashboardSignals = inject(DashboardSignals);

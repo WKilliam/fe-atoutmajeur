@@ -7,3 +7,6 @@ export {
   TYPE_SizeH,
   TYPE_SizeW
 } from './size-elements-types/size-elements-types'
+
+export * from './user-types/user-types'
+export * from './path-request-types/path-request-types'
