@@ -1,21 +1,14 @@
 import {Component, signal} from '@angular/core';
-import {ModalUi} from './ui/components/modal-ui/modal-ui';
-import {ModalUiInterface} from '@interfaces';
-import {Dashboard} from '@ui-views';
-import {Auth} from './ui/views/auth/auth';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   imports: [
-    ModalUi,
-    Dashboard,
-    Auth
+    RouterOutlet
   ],
   template: `
-<!--        <dashboard-view/>-->
-<auth-wiew></auth-wiew>
+    <router-outlet/>
   `,
-  styleUrl: './app.scss'
 })
 export class App {
   protected readonly title = signal('fe-atoutmajeur');

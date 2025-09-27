@@ -3,10 +3,11 @@ import { OrderHandlerUiInterface} from '@interfaces';
 import {HeaderOrderHandlerUi} from '../header-order-handler-ui/header-order-handler-ui';
 import {FilterOrderUi} from '../filter-order-ui/filter-order-ui';
 import {TabsDataUi} from '../tabs-data-ui/tabs-data-ui';
+import {PaginationUi} from '../pagination-ui/pagination-ui';
 
 @Component({
   selector: 'order-handler-ui',
-  imports: [HeaderOrderHandlerUi, FilterOrderUi, TabsDataUi],
+  imports: [HeaderOrderHandlerUi, FilterOrderUi, TabsDataUi, PaginationUi],
   template: `
     <div class="h-screen flex flex-col bg-light">
       <!-- Header Section - Fixe -->
@@ -23,19 +24,24 @@ import {TabsDataUi} from '../tabs-data-ui/tabs-data-ui';
         />
       </div>
 
-      <!-- Table Section - Scrollable -->
-      <div class="flex-1 overflow-hidden">
-        <div class="h-full overflow-auto">
+      <!-- Table Section - Scrollable avec flex-1 -->
+      <div class="flex-1 overflow-hidden flex flex-col">
+        <div class="flex-1 overflow-auto">
           <tabs-data-ui
             [config]="orderHandler.tabs"
           />
+        </div>
+
+        <!-- Pagination Section - Fixe en bas -->
+        <div class="flex-shrink-0 border-t border-accent bg-white">
+          <pagination-ui [pagination]="orderHandler.pagination"/>
         </div>
       </div>
     </div>
   `,
 })
 export class OrderHandlerUi {
-  @Input({required: true}) orderHandler: OrderHandlerUiInterface = {
+  @Input({required: true}) orderHandler: OrderHandlerUiInterface<any> = {
     headerOrder: {
       title: "",
       description: "",
@@ -48,6 +54,8 @@ export class OrderHandlerUi {
     },
     filterOrder: {
       searchInputConfig: {
+        id:'',
+        value:'',
         type: "number",
         label: "",
         required: false,
@@ -57,6 +65,8 @@ export class OrderHandlerUi {
         }
       },
       selectGarmentPossibilities: {
+        id:'',
+        value:'',
         options: [],
         required: false,
         callback: function (event: Event): void {
@@ -64,6 +74,8 @@ export class OrderHandlerUi {
         }
       },
       selectOrderStatus: {
+        id:'',
+        value:'',
         options: [],
         required: false,
         callback: function (event: Event): void {
@@ -95,10 +107,15 @@ export class OrderHandlerUi {
         }
       }
     },
+    pagination: {
+      totalCount: 0,
+      page: 0,
+      pageSize: 0
+    },
     tabs: {
       columns: [],
       data: [],
-      btnItems: {
+      btnComments: {
         callback: function (event: MouseEvent): void {
           throw new Error("Function not implemented.");
         }

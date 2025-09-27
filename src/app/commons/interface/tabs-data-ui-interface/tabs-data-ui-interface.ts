@@ -6,6 +6,7 @@ export interface TabsDataUiInterface {
   showActions?: boolean;
   striped?: boolean;
   bordered?: boolean;
-  btnItems: ButtonUiInterface;
+  btnChange?: ButtonUiInterface;
+  btnComments: ButtonUiInterface;
   modal:ModalUiInterface
 }

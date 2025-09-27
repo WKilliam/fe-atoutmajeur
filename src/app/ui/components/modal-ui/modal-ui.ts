@@ -1,13 +1,15 @@
-import {ButtonUiInterface, InputUiInterface, ModalUiInterface} from '@interfaces';
-import {Component, computed, EventEmitter, Input, Output, signal} from '@angular/core';
+import {ButtonUiInterface, InputUiInterface, ModalUiInterface, SelectUiOptionsInterface} from '@interfaces';
+import {Component, computed, Input, signal} from '@angular/core';
 import {ButtonUi} from '../button-ui/button-ui';
 import {IntpusUi} from '../intpus-ui/intpus-ui';
+import {SelectUi} from '../select-ui/select-ui';
 
 @Component({
   selector: 'modal-ui',
   imports: [
     ButtonUi,
-    IntpusUi
+    IntpusUi,
+    SelectUi
   ],
   template: `
     @if (modal$().isOpen) {
@@ -49,12 +51,21 @@ import {IntpusUi} from '../intpus-ui/intpus-ui';
               </div>
             }
 
+            <!-- Contenu SelectUiOptionsInterface[] avec grille intelligente -->
+            @if (modal$().selectOptions && modal$().selectOptions!.length > 0) {
+              <div [class]="selectContainerClass()">
+                @for (select of modal$().selectOptions; track $index) {
+                  <select-ui [selectUi]="select"></select-ui>
+                }
+              </div>
+            }
+
             <!-- Projection de contenu classique -->
             <ng-content></ng-content>
           </div>
 
           <!-- Footer avec boutons dynamiques -->
-          @if (modal$().btnOptions.length > 0) {
+          @if (modal$().btnOptions && modal$().btnOptions!.length > 0) {
             <div class="p-6 pt-0">
               <div [class]="buttonContainerClass()">
                 @for (button of modal$().btnOptions; track $index) {
@@ -90,9 +101,8 @@ export class ModalUi {
     closeOnOverlay: true,
     btnCloseButton: {
       variant: 'iconBtn',
-      icon: { name: 'X' },
+      icon: {name: 'X'},
       callback: (event: MouseEvent) => {
-        // Le parent doit fournir ce callback
         console.warn('btnCloseButton callback not implemented');
       }
     }
@@ -107,15 +117,26 @@ export class ModalUi {
     const inputCount = this.modal$().contentInput?.length || 0;
 
     if (inputCount === 0) return '';
-    if (inputCount === 1) return 'grid grid-cols-1 gap-4';
-    if (inputCount === 2) return 'grid grid-cols-2 gap-4';
+    if (inputCount === 1) return 'grid grid-cols-1 gap-4 mb-4';
+    if (inputCount === 2) return 'grid grid-cols-2 gap-4 mb-4';
 
     // 3+ inputs : 2 colonnes max
-    return 'grid grid-cols-2 gap-4';
+    return 'grid grid-cols-2 gap-4 mb-4';
+  });
+
+  protected selectContainerClass = computed(() => {
+    const selectCount = this.modal$().selectOptions?.length || 0;
+
+    if (selectCount === 0) return '';
+    if (selectCount === 1) return 'grid grid-cols-1 gap-4 mb-4';
+    if (selectCount === 2) return 'grid grid-cols-2 gap-4 mb-4';
+
+    // 3+ selects : 2 colonnes max
+    return 'grid grid-cols-2 gap-4 mb-4';
   });
 
   protected buttonContainerClass = computed(() => {
-    const btnCount = this.modal$().btnOptions.length;
+    const btnCount = this.modal$().btnOptions?.length || 0;
 
     if (btnCount === 0) return '';
     if (btnCount === 1) return 'flex gap-3';
@@ -131,15 +152,12 @@ export class ModalUi {
 
   protected closeButtonConfig = computed(() => ({
     variant: 'iconBtn' as const,
-    icon: { name: 'X' },
+    icon: {name: 'X'},
     ...this.modal$().btnCloseButton
   }));
 
-  // Output pour notifier la fermeture
-  // @Output() close = new EventEmitter<void>();
-
   // Setter pour l'input qui met à jour le signal
-  @Input() set modal(value: ModalUiInterface) {
+  @Input({required: true}) set modal(value: ModalUiInterface) {
     this.modal$.set(value);
   }
 
@@ -151,7 +169,6 @@ export class ModalUi {
   // Méthodes
   protected onOverlayClick(event: Event) {
     if (event.target === event.currentTarget && this.modal$().closeOnOverlay) {
-      // Le parent doit gérer la fermeture via le callback du btnCloseButton
       if (this.modal$().btnCloseButton?.callback) {
         this.modal$().btnCloseButton.callback(new MouseEvent('click'));
       }

@@ -1,8 +1,13 @@
 import {SelectUiOptionsInterface} from '@interfaces';
 
+export const CONST_UserRole = {
+  User : 'User',
+  Admin: 'Admin'
+}
+
 export const CONST_UserType = {
-  USER: { value: 'USER', label: 'User' },
-  ADMIN: { value: 'ADMIN', label: 'Administrator' }
+  USER: { value: 'USER', label: CONST_UserRole.User },
+  ADMIN: { value: 'ADMIN', label: CONST_UserRole.Admin }
 } as const;
 
 export const CONST_UserTypeSelectOptions: SelectUiOptionsInterface[] = [

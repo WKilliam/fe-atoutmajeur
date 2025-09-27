@@ -42,6 +42,8 @@ import {SelectUiInterface} from '@interfaces';
 })
 export class SelectUi {
   @Input({required:true}) selectUi : SelectUiInterface = {
+    id:'',
+    value:'',
     class: '',
     disabled: false,
     multiple: false,

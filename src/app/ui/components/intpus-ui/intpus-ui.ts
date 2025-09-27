@@ -53,6 +53,8 @@ import {IconUi} from '../icons-ui/icons-ui';
 })
 export class IntpusUi {
   @Input({required: true}) input: InputUiInterface = {
+    id:'',
+    value:'',
     class: '',
     disabled: false,
     icon: '',

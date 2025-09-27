@@ -1,177 +1,36 @@
-import {Injectable, signal} from '@angular/core';
-import {OrderHandlerUiInterface} from '@interfaces';
+import {Injectable, signal, computed, effect} from '@angular/core';
+import {CustomerOrderInterface, OrderHandlerUiInterface} from '@interfaces';
 import {
-  CONST_GarmentLabels,
   Const_GarmentPossibility,
-  CONST_OrderStatus,
   CONST_OrderStatusSelectOptions,
   CONST_SizeHElementConstant,
-  CONST_SizeWElementConstant
+  CONST_SizeWElementConstant,
+  CONST_UserRole, EXAMPLE_customerOrdersData,
 } from '@constants';
+import {TYPE_User} from '@types';
+import {HeaderOrderSignals} from '../header-order-signals/header-order-signals';
+import {FilterOrderSignals} from '../filter-order-signals/filter-order-signals';
+import {TabUiSignals} from '../tab-ui-signals/tab-ui-signals';
+import {PaginationSignals} from '../pagination-signals/pagination-signals';
 
 @Injectable({providedIn: 'root'})
 export class OrderHandlerSignals {
-  private readonly orderHandle$ = signal<OrderHandlerUiInterface>({
+
+  private readonly orderHandle$ = signal<OrderHandlerUiInterface<any>>({
     tabs: {
       columns: [
-        {key: 'orderNumber', label: 'Order Number'},
-        {key: 'date', label: 'Date'},
-        {key: 'customer', label: 'Customer'},
-        {key: 'items', label: 'Items'},
+        {key: 'orderRef', label: 'Order Number'},
+        {key: 'createdAt', label: 'Date'},
+        {key: 'garments', label: 'Items'},
         {key: 'status', label: 'Status'},
         {key: 'totalPrice', label: 'Total'},
         {key: 'estimatedDate', label: 'Estimated'}
       ],
-      data: [
-        {
-          id: 0,
-          orderNumber: 'ORD-2024-001',
-          date: '2024-01-15',
-          customer: 'Marie Dupont',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 6,
-          totalPrice: 25.50,
-          estimatedDate: '2024-01-18',
-          canCancel: true
-        },
-        {
-          id: 1,
-          orderNumber: 'ORD-2024-002',
-          date: '2024-01-14',
-          customer: 'Jean Martin',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-17',
-          canCancel: false,
-        },
-        {
-          id: 2,
-          orderNumber: 'ORD-2024-003',
-          date: '2024-01-13',
-          customer: 'Sophie Laurent',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-16',
-          canCancel: false
-        },
-        {
-          id: 3,
-          orderNumber: 'ORD-2024-004',
-          date: '2024-01-12',
-          customer: 'Pierre Durand',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-15',
-          canCancel: false
-        },
-        {
-          id: 4,
-          orderNumber: 'ORD-2024-005',
-          date: '2024-01-11',
-          customer: 'Emma Wilson',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-19',
-          canCancel: true
-        },
-        {
-          id: 5,
-          orderNumber: 'ORD-2024-006',
-          date: '2024-01-10',
-          customer: 'Lucas Bernard',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-18',
-          canCancel: false
-        },
-        {
-          id: 6,
-          orderNumber: 'ORD-2024-007',
-          date: '2024-01-09',
-          customer: 'Camille Moreau',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-20',
-          canCancel: false
-        },
-        {
-          id: 7,
-          orderNumber: 'ORD-2024-008',
-          date: '2024-01-08',
-          customer: 'Alexandre Petit',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-12',
-          canCancel: false
-        },
-        {
-          id: 8,
-          orderNumber: 'ORD-2024-009',
-          date: '2024-01-07',
-          customer: 'Julie Roux',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-10',
-          canCancel: false
-        },
-        {
-          id: 9,
-          orderNumber: 'ORD-2024-010',
-          date: '2024-01-06',
-          customer: 'Thomas Garcia',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '',
-          canCancel: false
-        },
-        {
-          id: 10,
-          orderNumber: 'ORD-2024-011',
-          date: '2024-01-20',
-          customer: 'Léa Dubois',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-23',
-          canCancel: true
-        },
-        {
-          id: 11,
-          orderNumber: 'ORD-2024-012',
-          date: '2024-01-19',
-          customer: 'Nicolas Roy',
-          items: CONST_GarmentLabels.DELICATE_ITEMS,
-          status: CONST_OrderStatus.PENDING.label,
-          numberItem: 2,
-          totalPrice: 85.00,
-          estimatedDate: '2024-01-25',
-          canCancel: false
-        }
-      ],
-      showActions: true,
+      data: EXAMPLE_customerOrdersData,
+      showActions: false,
       striped: true,
       bordered: true,
-      btnItems: {
+      btnComments: {
         iconPosition: 'right',
         icon: {
           name: 'file-pen-line',
@@ -193,22 +52,13 @@ export class OrderHandlerSignals {
       }
     },
     headerOrder: {
-      title: "My Current Orders",
-      description: "Current order status",
-      btn: {
-        label: "Create new order",
-        iconPosition: "left",
-        icon: {
-          name: 'plus',
-          class: 'w-6 h-6'
-        },
-        callback: function (event: MouseEvent): void {
-          throw new Error("Function not implemented.");
-        }
-      }
+      title: "",
+      description: "",
     },
     filterOrder: {
       searchInputConfig: {
+        id: '',
+        value: '',
         type: 'text',
         placeholder: "ex : Order #1",
         disabled: false,
@@ -221,6 +71,8 @@ export class OrderHandlerSignals {
         }
       },
       selectGarmentPossibilities: {
+        id: '',
+        value: '',
         label: "Select Status",
         required: true,
         placeholder: "ex: Shirts",
@@ -231,6 +83,8 @@ export class OrderHandlerSignals {
         }
       },
       selectOrderStatus: {
+        id: '',
+        value: '',
         label: "Select Status",
         required: true,
         placeholder: "ex: In Process",
@@ -257,7 +111,7 @@ export class OrderHandlerSignals {
         }
       },
       btnTimeMonth: {
-        label: "Mounth",
+        label: "Month",
         sizeW: CONST_SizeWElementConstant.MD,
         sizeH: CONST_SizeHElementConstant.MD,
         callback: function (event: MouseEvent): void {
@@ -274,10 +128,50 @@ export class OrderHandlerSignals {
           throw new Error("Function not implemented.");
         }
       },
-    }
-  })
+    },
+    pagination: {
+      totalCount: 0,
+      page: 1,
+      pageSize: 10
+    },
+  });
 
-  get orderHandle():OrderHandlerUiInterface{
-    return this.orderHandle$();
+  constructor(
+    protected readonly headerOrderSignals: HeaderOrderSignals,
+    protected readonly filterOrderSignals:FilterOrderSignals,
+    protected readonly tabOrdersSignals : TabUiSignals,
+    protected readonly paginationSignals:PaginationSignals
+  ) {
   }
+
+  private initHeaderOrder(userType:TYPE_User): void {
+    this.headerOrderSignals.setOrderHeader(userType)
+    this.orderHandle$.update(current => ({
+      ...current,
+      headerOrder: this.headerOrderSignals.headerOrder
+    }));
+  }
+
+  setTabData(tabData:CustomerOrderInterface[]){
+    this.tabOrdersSignals.setTab(tabData);
+  }
+
+  private initTabOrders(userType:TYPE_User): void {
+    this.tabOrdersSignals.initTabOrder(userType)
+    this.orderHandle$.update(current => ({
+      ...current,
+      tabs: this.tabOrdersSignals.tabOrder
+    }));
+  }
+
+  initOrder(userType:TYPE_User) {
+    this.initHeaderOrder(userType)
+    this.initTabOrders(userType)
+    return this.orderHandle$()
+  }
+
+  get orderHandle() : OrderHandlerUiInterface<any>{
+    return this.orderHandle$()
+  }
+
 }

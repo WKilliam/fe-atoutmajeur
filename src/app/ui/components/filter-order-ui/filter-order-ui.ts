@@ -53,6 +53,8 @@ import {ButtonUi} from '../button-ui/button-ui';
 export class FilterOrderUi {
   @Input({required: true}) filterOrder: OrderFilterUiInterface = {
     selectGarmentPossibilities: {
+      id:'',
+      value:'',
       options: [],
       required: false,
       callback: function (event: Event): void {
@@ -60,6 +62,8 @@ export class FilterOrderUi {
       }
     },
     searchInputConfig: {
+      id:'',
+      value:'',
       type: "number",
       label: "",
       required: false,
@@ -75,6 +79,8 @@ export class FilterOrderUi {
       }
     },
     selectOrderStatus: {
+      id:'',
+      value:'',
       options: [],
       required: false,
       callback: function (event: Event): void {

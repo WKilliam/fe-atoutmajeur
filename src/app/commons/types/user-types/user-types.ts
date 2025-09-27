@@ -1,3 +1,3 @@
-import {CONST_UserType} from '@constants';
+import {CONST_UserRole} from '@constants';
 
-export type TYPE_User = typeof CONST_UserType[keyof typeof CONST_UserType]['value'];
+export type TYPE_User = typeof CONST_UserRole[keyof typeof CONST_UserRole];

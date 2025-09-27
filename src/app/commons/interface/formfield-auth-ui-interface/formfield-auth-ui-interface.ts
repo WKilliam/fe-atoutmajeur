@@ -6,5 +6,5 @@ export interface FormfieldAuthUiInterface {
   btnAuth: ButtonUiInterface
   signInButton?: ButtonUiInterface
   currentTypeAuth:AuthType
-  selectUserType?:SelectUiInterface
+  selectUserType?:SelectUiInterface,
 }

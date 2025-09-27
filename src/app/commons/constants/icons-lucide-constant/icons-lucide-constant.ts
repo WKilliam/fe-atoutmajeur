@@ -6,7 +6,9 @@ import {
   Plus,
   Search,
   FilePenLine,
-  X
+  X,
+  ClipboardMinus,
+  MessageCircle
 } from 'lucide-angular';
 
 export const CONST_LucideIconRecord: Record<string, any> = {
@@ -18,5 +20,7 @@ export const CONST_LucideIconRecord: Record<string, any> = {
   'plus':Plus,
   'search':Search,
   'file-pen-line': FilePenLine,
-  'x':X
+  'x':X,
+  'report':ClipboardMinus,
+  'comment': MessageCircle
 };

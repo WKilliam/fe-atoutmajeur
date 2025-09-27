@@ -21,6 +21,9 @@ import {ModalUi} from '../modal-ui/modal-ui';
               {{ column.label }}
             </th>
           }
+          <th class="px-6 py-3 text-center text-xs font-medium text-dark uppercase tracking-wider">
+            Comments
+          </th>
           @if (config.showActions) {
             <th class="px-6 py-3 text-left text-xs font-medium text-dark uppercase tracking-wider">
               Actions
@@ -29,7 +32,6 @@ import {ModalUi} from '../modal-ui/modal-ui';
         </tr>
         </thead>
 
-        <!-- Body -->
         <tbody [class]="getBodyClasses()">
           @for (row of config.data; track $index; let isEven = $even) {
             <tr [class]="getRowClasses(isEven)">
@@ -38,10 +40,15 @@ import {ModalUi} from '../modal-ui/modal-ui';
                   {{ getCellValue(row, column.key) }}
                 </td>
               }
-              @if (config.showActions) {
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-dark">
+                <div class="flex">
+                  <button-ui [config]="this.config.btnComments"></button-ui>
+                </div>
+              </td>
+              @if (config.showActions && this.config.btnChange) {
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-dark">
                   <div class="flex space-x-2">
-                    <button-ui [config]="this.config.btnItems"></button-ui>
+                    <button-ui [config]="this.config.btnChange"></button-ui>
                   </div>
                 </td>
               }
@@ -72,7 +79,7 @@ export class TabsDataUi {
         }
       }
     },
-    btnItems: {
+    btnComments: {
       callback: function (event: MouseEvent): void {
         throw new Error("Function not implemented.");
       }

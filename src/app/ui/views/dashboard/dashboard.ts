@@ -8,7 +8,7 @@ import {OrderHandlerUi} from '../../components/order-handler-ui/order-handler-ui
   imports: [
     SidebarUi,
     SidebarUi,
-    OrderHandlerUi
+    OrderHandlerUi,
   ],
   template: `
     <div class="flex h-full">

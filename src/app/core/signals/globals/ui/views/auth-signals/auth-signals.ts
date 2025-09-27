@@ -1,12 +1,12 @@
-import {Injectable, signal} from '@angular/core';
-import {FormfieldAuthUiInterface} from '@interfaces';
+import {effect, Injectable, signal} from '@angular/core';
+import {FormfieldAuthUiInterface, SelectUiOptionsInterface} from '@interfaces';
 import {AuthType} from '@enums';
-import {
-  CONST_UserTypeSelectOptions
-} from '@constants';
+import { CONST_UserTypeSelectOptions} from '@constants';
+import {HttpApiCore} from '../../../../../http/httpApiCore';
 
 @Injectable({providedIn: 'root'})
 export class AuthSignals {
+
 
   private currentAuthType$ = signal<AuthType>(AuthType.LOGIN);
 
@@ -18,8 +18,7 @@ export class AuthSignals {
       sizeW: 'full',
       loading: false,
       callback: (event: MouseEvent) => {
-        console.log('Login clicked', event);
-        // TODO: Implement login logic
+        this.handleLogin();
       }
     },
     signInButton: {
@@ -31,25 +30,29 @@ export class AuthSignals {
     },
     inputfieldAuth: [
       {
+        id: 'email_login',
         type: 'email',
         placeholder: 'Votre email',
         label: 'Email',
         required: true,
+        value: '',
         errorMessage: '',
         callback: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          this.updateFieldValue(AuthType.LOGIN, 0, target.value);
+          this.updateFieldValueInput(AuthType.LOGIN, 0, target.value);
         }
       },
       {
+        id: 'password_login',
         type: 'password',
         placeholder: 'Votre mot de passe',
         label: 'Mot de passe',
         required: true,
+        value: '',
         errorMessage: '',
         callback: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          this.updateFieldValue(AuthType.LOGIN, 1, target.value);
+          this.updateFieldValueInput(AuthType.LOGIN, 1, target.value);
         }
       }
     ]
@@ -63,8 +66,7 @@ export class AuthSignals {
       sizeW: 'full',
       loading: false,
       callback: (event: MouseEvent) => {
-        console.log('Register clicked', event);
-        // TODO: Implement register logic
+        this.handleRegister();
       }
     },
     signInButton: {
@@ -75,72 +77,78 @@ export class AuthSignals {
       }
     },
     selectUserType: {
+      id: 'user_type_register',
       options: CONST_UserTypeSelectOptions,
       required: true,
-      callback: function (event: Event): void {
-        throw new Error("Function not implemented.");
+      value: '',
+      callback: (event: Event) => {
+        const target = event.target as HTMLSelectElement;
+        const selectedValue = target.value;
+        const selectedOption = CONST_UserTypeSelectOptions.find(
+          option => option.value === selectedValue
+        );
+        if (selectedOption) {
+          this.updateFieldValueSelect(selectedOption);
+        }
       }
     },
     inputfieldAuth: [
       {
+        id: 'firstName_register',
         type: 'text',
         placeholder: 'Votre prénom',
         label: 'Prénom',
         required: true,
+        value: '',
         errorMessage: '',
         callback: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          this.updateFieldValue(AuthType.REGISTER, 0, target.value);
+          this.updateFieldValueInput(AuthType.REGISTER, 0, target.value);
         }
       },
       {
+        id: 'lastName_register',
         type: 'text',
         placeholder: 'Votre nom',
         label: 'Nom',
         required: true,
+        value: '',
         errorMessage: '',
         callback: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          this.updateFieldValue(AuthType.REGISTER, 1, target.value);
+          this.updateFieldValueInput(AuthType.REGISTER, 1, target.value);
         }
       },
       {
+        id: 'email_register',
         type: 'email',
         placeholder: 'Votre email',
         label: 'Email',
         required: true,
+        value: '',
         errorMessage: '',
         callback: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          this.updateFieldValue(AuthType.REGISTER, 2, target.value);
+          this.updateFieldValueInput(AuthType.REGISTER, 2, target.value);
         }
       },
       {
+        id: 'password_register',
         type: 'password',
         placeholder: 'Choisir un mot de passe',
         label: 'Mot de passe',
         required: true,
         errorMessage: '',
+        value: '',
         callback: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          this.updateFieldValue(AuthType.REGISTER, 3, target.value);
+          this.updateFieldValueInput(AuthType.REGISTER, 3, target.value);
         },
       },
     ]
   });
 
-  private fieldValues = new Map<string, string>();
-
-  getFormFieldAuthLogin() {
-    return this.formFieldAuthLogin$();
-  }
-
-  getFormFieldAuthRegister() {
-    return this.formFieldAuthRegister$();
-  }
-
-  getCurrentAuthType() {
-    return this.currentAuthType$();
+  constructor(private readonly http: HttpApiCore) {
   }
 
   switchToLogin() {
@@ -169,28 +177,85 @@ export class AuthSignals {
     });
   }
 
-  updateFieldValue(authType: AuthType, fieldIndex: number, value: string) {
-    const key = `${authType}_${fieldIndex}`;
-    this.fieldValues.set(key, value);
+  getFormFieldAuthLogin() {
+    return this.formFieldAuthLogin$();
   }
 
-  getFieldValue(authType: AuthType, fieldIndex: number): string {
-    const key = `${authType}_${fieldIndex}`;
-    return this.fieldValues.get(key) || '';
+  getFormFieldAuthRegister() {
+    return this.formFieldAuthRegister$();
   }
 
-  setFieldError(authType: AuthType, fieldIndex: number, error: string) {
-    const formField = authType === AuthType.LOGIN ?
-      this.formFieldAuthLogin$ : this.formFieldAuthRegister$;
+  getCurrentAuthType() {
+    return this.currentAuthType$();
+  }
 
-    const currentForm = formField();
-    const updatedFields = [...currentForm.inputfieldAuth];
-    updatedFields[fieldIndex] = { ...updatedFields[fieldIndex], errorMessage: error };
+  private updateFieldValueInput(authType: AuthType, indexOfArray: number, value: string) {
+    if (authType === AuthType.REGISTER) {
+      this.formFieldAuthRegister$.update(currentForm => ({
+        ...currentForm,
+        inputfieldAuth: currentForm.inputfieldAuth.map((field, index) =>
+          index === indexOfArray
+            ? {...field, value: value}
+            : field
+        )
+      }));
+    } else {
+      this.formFieldAuthLogin$.update(currentForm => ({
+        ...currentForm,
+        inputfieldAuth: currentForm.inputfieldAuth.map((field, index) =>
+          index === indexOfArray
+            ? {...field, value: value}
+            : field
+        )
+      }));
+    }
+  }
 
-    formField.set({
+  private updateFieldValueSelect(value: SelectUiOptionsInterface) {
+
+    this.formFieldAuthRegister$.update(currentForm => ({
       ...currentForm,
-      inputfieldAuth: updatedFields
-    });
+      selectUserType: {
+        ...currentForm.selectUserType!,
+        value: value.label
+      }
+    }));
+  }
+
+
+  private async handleRegister() {
+    if (!this.isFormValid(AuthType.REGISTER)) {
+      console.error('Formulaire d\'inscription invalide');
+      return;
+    }
+    this.setLoading(AuthType.REGISTER, true);
+    try {
+      const registerData = this.getFormData(AuthType.REGISTER);
+      await this.http.authRegister(registerData);
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
+      this.setFieldError(AuthType.REGISTER, 2, 'Erreur d\'inscription');
+    } finally {
+      this.setLoading(AuthType.REGISTER, false);
+    }
+  }
+
+  private async handleLogin() {
+    if (!this.isFormValid(AuthType.LOGIN)) {
+      console.error('Formulaire de connexion invalide');
+      return;
+    }
+
+    this.setLoading(AuthType.LOGIN, true);
+    try {
+      const loginData = this.getFormData(AuthType.LOGIN);
+      await this.http.authLogin(loginData);
+    } catch (error) {
+      console.error('Erreur lors de la connexion:', error);
+      this.setFieldError(AuthType.LOGIN, 0, 'Erreur de connexion');
+    } finally {
+      this.setLoading(AuthType.LOGIN, false);
+    }
   }
 
   setLoading(authType: AuthType, loading: boolean) {
@@ -200,36 +265,88 @@ export class AuthSignals {
     const currentForm = formField();
     formField.set({
       ...currentForm,
-      btnAuth: { ...currentForm.btnAuth, loading }
+      btnAuth: {...currentForm.btnAuth, loading}
+    });
+  }
+
+  private setFieldError(authType: AuthType, fieldIndex: number, error: string) {
+    const formField = authType === AuthType.LOGIN ?
+      this.formFieldAuthLogin$ : this.formFieldAuthRegister$;
+
+    const currentForm = formField();
+    const updatedFields = [...currentForm.inputfieldAuth];
+    updatedFields[fieldIndex] = {...updatedFields[fieldIndex], errorMessage: error};
+
+    formField.set({
+      ...currentForm,
+      inputfieldAuth: updatedFields
     });
   }
 
   isFormValid(authType: AuthType): boolean {
-    const form = authType === AuthType.LOGIN ?
-      this.getFormFieldAuthLogin() : this.getFormFieldAuthRegister();
+    const form = authType === AuthType.LOGIN ? this.getFormFieldAuthLogin() : this.getFormFieldAuthRegister();
 
     return form.inputfieldAuth.every((field, index) => {
       if (field.required) {
-        const value = this.getFieldValue(authType, index);
-        return value.trim() !== '';
+        return field.value !== '' && field.value !== undefined;
       }
       return true;
     });
   }
 
-  getFormData(authType: AuthType) {
+  private getFormData(authType: AuthType) {
     if (authType === AuthType.LOGIN) {
-      return {
-        email: this.getFieldValue(authType, 0),
-        password: this.getFieldValue(authType, 1)
-      };
+      return this.getLoginData();
     } else {
-      return {
-        firstName: this.getFieldValue(authType, 0),
-        lastName: this.getFieldValue(authType, 1),
-        email: this.getFieldValue(authType, 2),
-        password: this.getFieldValue(authType, 3)
-      };
+      return this.getRegisterData();
     }
+  }
+
+  private getLoginData() {
+    const form = this.getFormFieldAuthLogin();
+    const data = form.inputfieldAuth.reduce((acc, field) => {
+      const idMap: Record<string, string> = {
+        'email_login': 'email',
+        'password_login': 'password'
+      };
+
+      const key = idMap[field.id];
+      if (key) {
+        acc[key] = field.value || '';
+      }
+      return acc;
+    }, {} as any);
+
+    return data;
+  }
+
+  private getRegisterData() {
+    const form = this.getFormFieldAuthRegister();
+
+    const inputData = form.inputfieldAuth.reduce((acc, field) => {
+      const idMap: Record<string, string> = {
+        'firstName_register': 'firstName',
+        'lastName_register': 'lastName',
+        'email_register': 'email',
+        'password_register': 'password'
+      };
+
+      const key = idMap[field.id];
+      if (key) {
+        acc[key] = field.value || '';
+      }
+      return acc;
+    }, {} as any);
+
+    const selectedUserType = form.selectUserType?.value || '';
+
+    const selectedOption = CONST_UserTypeSelectOptions.find(
+      option => option.label === selectedUserType
+    );
+
+    return {
+      ...inputData,
+      role: selectedOption?.value || '',
+    };
   }
 }
